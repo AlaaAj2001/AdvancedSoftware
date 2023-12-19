@@ -1,5 +1,6 @@
 // models/reportModel.js
-const knex = require('../knexfile.js');
+const knexConfig = require('../knexfile.js');
+const knex = require('knex')(knexConfig);
 
 module.exports = {
   getAllReports: () => knex('reports').select('*'),

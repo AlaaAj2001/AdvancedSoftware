@@ -1,6 +1,7 @@
 // models/alertModel.js
 
-const knex = require('../knexfile.js');
+const knexConfig = require('../knexfile.js');
+const knex = require('knex')(knexConfig);
 
 module.exports = {
   getAllAlerts: () => knex('alerts').select('*'),
