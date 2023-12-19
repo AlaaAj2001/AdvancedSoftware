@@ -1,4 +1,4 @@
-const knex = require('C:\Users\lenovo\Documents\GitHub\AdvancedSoftware\knexfile.js');
+const knex = require('../knexfile.js');
 
 
 module.exports = {
