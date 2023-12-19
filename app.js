@@ -20,6 +20,13 @@ app.use('/api/educational-resources', educationalResourcesRoutes);
 const openDataAccessRoutes = require('./routes/openDataAccessRoutes');
 app.use('/api/open-data-access', openDataAccessRoutes);
 
+const alertRoutes = require('./routes/alertRoutes');
+app.use('/api', alertRoutes);
+
+const reportRoutes = require('./routes/reportRoutes');
+app.use('/api', reportRoutes);
+
+
 // Error handling middleware
 app.use(handleErrors);
 
