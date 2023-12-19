@@ -1,25 +1,29 @@
-// app.js
 const express = require('express');
-const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes'); // Adjust the path
-const environmentalDataRoutes = require('./routes/environmentalDataRoutes'); // Adjust the path
-const alertsRoutes = require('./routes/alertsRoutes'); // Adjust the path
-
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
+// Other middleware and configurations can go here
 
-// Define a route for the root path
-app.get('/', (req, res) => {
-  res.send('Welcome to EcoTrack API!');
-});
+// Mount user routes
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/users', userRoutes);
 
-// Use user, environmentalData, and alerts routes
-app.use('/users', userRoutes);
-app.use('/environmentalData', environmentalDataRoutes);
-app.use('/alerts', alertsRoutes);
+// Mount sustainability score routes
+const sustainabilityScoreRoutes = require('./routes/sustainabilityScoreRoutes');
+app.use('/api/sustainability-score', sustainabilityScoreRoutes);
 
+// Mount educational resources routes
+const educationalResourcesRoutes = require('./routes/educationalResourcesRoutes');
+app.use('/api/educational-resources', educationalResourcesRoutes);
+
+// Mount open data access routes
+const openDataAccessRoutes = require('./routes/openDataAccessRoutes');
+app.use('/api/open-data-access', openDataAccessRoutes);
+
+// Error handling middleware
+app.use(handleErrors);
+
+// Listen on the specified port
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

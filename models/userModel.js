@@ -1,25 +1,10 @@
-// models/userModel.js
-const db = require('../db'); // Adjust the path
+const knex = require('C:\Users\lenovo\Documents\GitHub\AdvancedSoftware\knexfile.js');
 
-function createUser(user) {
-  return db('users').insert(user);
-}
-
-function getUsers() {
-  return db('users').select('*');
-}
-
-function updateUser(id, updatedUser) {
-  return db('users').where({ id }).update(updatedUser);
-}
-
-function deleteUser(id) {
-  return db('users').where({ id }).del();
-}
 
 module.exports = {
-  createUser,
-  getUsers,
-  updateUser,
-  deleteUser,
+  getAllUsers: () => knex('users').select('*'),
+  getUserById: (id) => knex('users').where({ id }).first(),
+  createUser: (user) => knex('users').insert(user),
+  updateUser: (id, data) => knex('users').where({ id }).update(data),
+  deleteUser: (id) => knex('users').where({ id }).del(),
 };
