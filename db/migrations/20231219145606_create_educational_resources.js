@@ -1,9 +1,12 @@
+// migrations/timestamp_create_educational_resources.js
+
 exports.up = function (knex) {
     return knex.schema.createTable('educational_resources', function (table) {
-      table.increments('id').primary();
+      table.uuid('id').primary();
       table.string('title').notNullable();
       table.string('url').notNullable();
-      // Add other educational resource fields as needed
+      // Add more fields as needed
+      table.timestamps(true, true);
     });
   };
   
