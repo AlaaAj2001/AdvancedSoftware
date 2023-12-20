@@ -8,3 +8,5 @@ module.exports = {
   updateUser: (id, data) => knex('users').where({ id }).update(data),
   deleteUser: (id) => knex('users').where({ id }).del(),
 };
+
+//module.exports = UserModel;
