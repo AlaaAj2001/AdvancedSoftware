@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3000;
 const knex = require("./knexfile"); // Assuming database.js is in the same directory
 const bodyParser = require('body-parser'); // Add this line
 
+
 // Middleware
 app.use(bodyParser.json()); // Add this line to parse JSON bodies
 app.use(bodyParser.urlencoded({ extended: true })); // Add this line to parse URL-encoded bodies
@@ -41,6 +42,8 @@ app.use('/api/alert-Routes', alertRoutes);
 const reportRoutes = require("./routes/reportRoutes");
 app.use('/api/report-Routes', reportRoutes);
 
+// const userRouter = require("./routes/userRouter");
+// app.use("./routes/userRoutes", userRouter);
 
 // Error handling middleware
 app.use(handleErrors);
@@ -49,3 +52,4 @@ app.use(handleErrors);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
