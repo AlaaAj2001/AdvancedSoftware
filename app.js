@@ -3,9 +3,27 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const knex = require("./knexfile"); // Assuming database.js is in the same directory
+const bodyParser = require('body-parser'); // Add this line
+
+// app.js or main server file
+
+// ... (existing code)
+
+// Define error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack); // Log the error
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
 
 // Middleware
-app.use(express.json());
+app.use(bodyParser.json()); // Add this line to parse JSON bodies
+app.use(bodyParser.urlencoded({ extended: true })); // Add this line to parse URL-encoded bodies
+app.use((req, res, next) => {
+  console.log(`Received ${req.method} request at ${req.url}`);
+  next();
+});
+
 
 // Define error handling middleware
 const handleErrors = (err, req, res, next) => {
@@ -31,6 +49,7 @@ app.use('/api/open-data-access', openDataAccessRoutes);
 
 const alertRoutes = require("./routes/alertRoutes");
 app.use('/api/alert-Routes', alertRoutes);
+
 
 const reportRoutes = require("./routes/reportRoutes");
 app.use('/api/report-Routes', reportRoutes);
