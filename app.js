@@ -36,8 +36,8 @@ app.use('/api/alert-Routes', alertRoutes);
 const reportRoutes = require("./routes/reportRoutes");
 app.use('/api/report-Routes', reportRoutes);
 
-// const userRouter = require("./routes/userRouter");
-// app.use("./routes/userRoutes", userRouter);
+const userProfileRoutes = require('./routes/userProfileRoutes');
+app.use('/api', userProfileRoutes);
 
 // Error handling middleware
 app.use(handleErrors);
