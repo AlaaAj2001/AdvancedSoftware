@@ -48,7 +48,8 @@ const reportRoutes = require("./routes/reportRoutes");
 app.use('/api/report-Routes', reportRoutes);
 
 const userProfileRoutes = require('./routes/userProfileRoutes');
-app.use('/api/login', userProfileRoutes);
+app.use('/api/users', userProfileRoutes);
+
 
 // Use the authentication routes
 const authRoutes = require('./routes/authRoutes');
