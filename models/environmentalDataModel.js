@@ -1,8 +1,18 @@
-const knex = require('../knexfile.js');
+const knexConfig = require('../knexfile.js');
+const knex = require('knex')(knexConfig);
 
-const EnvironmentalDataModel = {
-  submitData: (data) => knex('environmental_data').insert(data),
 
+const addEnvironmentalData = async (data) => {
+    try {
+        data.created_at = new Date().toISOString(); // Add current date and time
+        const insertedData = await knex('environmentaldata').insert(data);
+        return insertedData;
+    } catch (error) {
+        throw new Error(error.message);
+    }
 };
 
-module.exports = EnvironmentalDataModel;
+module.exports = {
+    addEnvironmentalData,
+};
+

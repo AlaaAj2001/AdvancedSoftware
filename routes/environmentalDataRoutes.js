@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const EnvironmentalDataController = require('../controllers/environmentalDataController');
+const environmentalDataController = require('../controllers/environmentalDataController');
 
-router.post('/submit-data', EnvironmentalDataController.submitData);
-
+router.post('/add', environmentalDataController.addEnvironmentalData);
 
 module.exports = router;

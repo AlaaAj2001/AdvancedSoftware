@@ -6,6 +6,7 @@ const knex = require("./knexfile"); // Assuming database.js is in the same direc
 const bodyParser = require('body-parser'); // Add this line
 
 
+
 // Middleware
 app.use(bodyParser.json()); // Add this line to parse JSON bodies
 app.use(bodyParser.urlencoded({ extended: true })); // Add this line to parse URL-encoded bodies
@@ -19,6 +20,10 @@ const handleErrors = (err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal Server Error' });
 };
+
+const environmentalDataRoutes = require('./routes/environmentalDataRoutes');
+app.use(express.json());
+app.use('/api/environmentaldata', environmentalDataRoutes);
 
 // Mount user routes
 const userRoutes = require("./routes/userRoutes");
