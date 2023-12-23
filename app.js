@@ -43,7 +43,11 @@ const reportRoutes = require("./routes/reportRoutes");
 app.use('/api/report-Routes', reportRoutes);
 
 const userProfileRoutes = require('./routes/userProfileRoutes');
-app.use('/api', userProfileRoutes);
+app.use('/api/login', userProfileRoutes);
+
+// Use the authentication routes
+const authRoutes = require('./routes/authRoutes');
+app.use('/auth', authRoutes);
 
 // Error handling middleware
 app.use(handleErrors);
@@ -52,4 +56,3 @@ app.use(handleErrors);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
