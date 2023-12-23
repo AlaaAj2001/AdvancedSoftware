@@ -1,3 +1,4 @@
+
 exports.up = function (knex) {
     return knex.schema.createTable('reports', function (table) {
       table.uuid('reportId').primary();
