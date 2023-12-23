@@ -1,4 +1,4 @@
-const userModel = require('../models/userModel');
+const userModel = require('../models/userProfileModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -38,8 +38,27 @@ const generateToken = (user) => {
 
   return token;
 };
+const updateUser = async (userId, updatedUserData) => {
+  try {
+    
+    const updatedUser = await userModel.updateUser(userId, updatedUserData);
+    return updatedUser;
+  } catch (error) {
+    throw new Error('Error updating user');
+  }
+};
 
+const deleteUser = async (userId) => {
+  try {
+    // Implement user deletion logic using the userModel
+    await userModel.deleteUser(userId);
+    return { message: 'User deleted successfully' };
+  } catch (error) {
+    throw new Error('Error deleting user');
+  }
+};
 module.exports = {
   loginUser,
-  // Other authentication functions (register, logout, etc.) if needed
+  updateUser,
+  deleteUser
 };

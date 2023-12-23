@@ -4,7 +4,7 @@ exports.up = function(knex) {
       table.string('username').notNullable();
       table.string('source');
       table.string('data_type');
-      table.float('value');
+      table.string('value');
       table.string('location');
       table.timestamp('created_at').defaultTo(knex.fn.now());
     });

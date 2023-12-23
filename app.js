@@ -44,6 +44,8 @@ app.use('/api/open-data-access', openDataAccessRoutes);
 const alertRoutes = require("./routes/alertRoutes");
 app.use('/api/alert-Routes', alertRoutes);
 
+const userProfileRoutes = require('./routes/userProfileRoutes');
+app.use('/api/users', userProfileRoutes);
 
 const reportRoutes = require("./routes/reportRoutes");
 app.use('/api/report-Routes', reportRoutes);const userProfileRoutes = require('./routes/userProfileRoutes');
