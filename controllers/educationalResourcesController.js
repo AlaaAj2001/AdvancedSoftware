@@ -1,4 +1,4 @@
-const educationalResourcesModel = require('../models/educationalResources');
+const educationalResourcesModel = require('../models/educationalResourcesModel');
 
 const getAllResources = async () => educationalResourcesModel.getAllResources();
 

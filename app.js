@@ -5,16 +5,6 @@ const PORT = process.env.PORT || 3000;
 const knex = require("./knexfile"); // Assuming database.js is in the same directory
 const bodyParser = require('body-parser'); // Add this line
 
-// app.js or main server file
-
-// ... (existing code)
-
-// Define error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack); // Log the error
-  res.status(500).json({ error: 'Internal Server Error' });
-});
-
 
 // Middleware
 app.use(bodyParser.json()); // Add this line to parse JSON bodies
@@ -23,7 +13,6 @@ app.use((req, res, next) => {
   console.log(`Received ${req.method} request at ${req.url}`);
   next();
 });
-
 
 // Define error handling middleware
 const handleErrors = (err, req, res, next) => {
@@ -36,15 +25,15 @@ const userRoutes = require("./routes/userRoutes");
 app.use('/api/users', userRoutes);
 
 // Mount sustainability score routes
-const sustainabilityScoreRoutes = require("./routes/sustainabilityScore");
+const sustainabilityScoreRoutes = require("./routes/sustainabilityScoreRoutes");
 app.use('/api/sustainability-score', sustainabilityScoreRoutes);
 
 // Mount educational resources routes
-const educationalResourcesRoutes = require("./routes/educationalResources");
+const educationalResourcesRoutes = require("./routes/educationalResourcesRoutes");
 app.use('/api/educational-resources', educationalResourcesRoutes);
 
 // Mount open data access routes
-const openDataAccessRoutes = require("./routes/openDataAccess");
+const openDataAccessRoutes = require("./routes/openDataAccessRoutes");
 app.use('/api/open-data-access', openDataAccessRoutes);
 
 const alertRoutes = require("./routes/alertRoutes");
@@ -53,6 +42,15 @@ app.use('/api/alert-Routes', alertRoutes);
 
 const reportRoutes = require("./routes/reportRoutes");
 app.use('/api/report-Routes', reportRoutes);
+
+
+const userProfileRoutes = require('./routes/userProfileRoutes');
+app.use('/api/login', userProfileRoutes);
+
+// Use the authentication routes
+const authRoutes = require('./routes/authRoutes');
+app.use('/auth', authRoutes);
+
 
 
 // Error handling middleware
