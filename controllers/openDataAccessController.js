@@ -1,4 +1,4 @@
-const openDataAccessModel = require('../models/openDataAccess');
+const openDataAccessModel = require('../models/openDataAccessModel');
 
 const grantDataAccess = async (researcherId, dataId) => openDataAccessModel.grantDataAccess(researcherId, dataId);
 

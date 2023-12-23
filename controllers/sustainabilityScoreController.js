@@ -1,4 +1,4 @@
-const sustainabilityScoreModel = require("../models/sustainabilityScore");
+const sustainabilityScoreModel = require("../models/sustainabilityScoreModel");
 
 // Calculate sustainability score based on environmental data and actions
 const calculateSustainabilityScore = async (userId) => {
