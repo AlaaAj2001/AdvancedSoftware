@@ -1,15 +1,18 @@
 // controllers/alertController.js
 
 const alertModel = require('../models/alertModel');
-
-const grantAlertAccess = async (userId, alertId) => alertModel.grantAlertAccess(userId, alertId);
-
-const getAlertAccess = async (userId) => alertModel.getAlertAccess(userId);
-
-const revokeAlertAccess = async (userId, alertId) => alertModel.revokeAlertAccess(userId, alertId);
-
+const getAllAlerts = async () => alertModel.getAllAlerts(); 
+const getAlertsByType = async (alertType) => {
+  try {
+    const alerts = await alertModel.getAlertsByType(alertType);
+    return alerts;
+  } catch (error) {
+    console.error('Error in getAlertsByType:', error);
+    throw error;
+  }
+};
 module.exports = {
-  grantAlertAccess,
-  getAlertAccess,
-  revokeAlertAccess,
+  getAlertsByType, 
+
+  getAllAlerts, 
 };

@@ -1,59 +1,40 @@
-const UserModel = require('../models/userModel');
+const userModel = require('../models/userModel');
+const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt');
 
-const UserController = {
-  getAllUsers: async (req, res) => {
-    try {
-      const users = await UserModel.getAllUsers();
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
+const createUser = async (userData) => {
+  const { username, email, gender, dob, location, password } = userData;
 
-  getUserById: async (req, res) => {
-    const { id } = req.params;
-    try {
-      const user = await UserModel.getUserById(id);
-      if (!user) {
-        res.status(404).json({ message: 'User not found' });
-        return;
-      }
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
+  // Check if the email or username already exists
+  const existingEmailUser = await userModel.getUserByEmail(email);
+  const existingUsernameUser = await userModel.getUserByUsername(username);
 
-  createUser: async (req, res) => {
-    const user = req.body;
-    try {
-      const result = await UserModel.createUser(user);
-      res.status(201).json({ message: 'User created successfully', data: result });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
+  if (existingEmailUser) {
+    throw new Error('Email is already registered');
+  }
 
-  updateUser: async (req, res) => {
-    const { id } = req.params;
-    const data = req.body;
-    try {
-      const result = await UserModel.updateUser(id, data);
-      res.status(200).json({ message: 'User updated successfully', data: result });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
+  if (existingUsernameUser) {
+    throw new Error('Username is already taken');
+  }
 
-  deleteUser: async (req, res) => {
-    const { id } = req.params;
-    try {
-      const result = await UserModel.deleteUser(id);
-      res.status(200).json({ message: 'User deleted successfully', data: result });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
+  // Hash the password
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
+
+  const user = {
+    id: uuidv4(),
+    username,
+    email,
+    gender,
+    dob,
+    location,
+    password: hashedPassword,
+    created_at: new Date().toISOString()
+  };
+
+  return await userModel.createUser(user);
 };
 
-module.exports = UserController;
+module.exports = {
+  createUser,
+};

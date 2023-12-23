@@ -5,8 +5,6 @@ const knex = require('knex')(knexConfig);
 
 module.exports = {
   getAllAlerts: () => knex('alerts').select('*'),
-  getAlertById: (id) => knex('alerts').where({ id }).first(),
-  createAlert: (alert) => knex('alerts').insert(alert),
-  updateAlert: (id, data) => knex('alerts').where({ id }).update(data),
-  deleteAlert: (id) => knex('alerts').where({ id }).del(),
+  getAlertsByType: (alertType) => knex('alerts').where({ alert_type: alertType }).select('*'),
+
 };

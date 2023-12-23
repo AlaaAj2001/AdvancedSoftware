@@ -39,11 +39,25 @@ app.use('/api/open-data-access', openDataAccessRoutes);
 const alertRoutes = require("./routes/alertRoutes");
 app.use('/api/alert-Routes', alertRoutes);
 
+
 const reportRoutes = require("./routes/reportRoutes");
 app.use('/api/report-Routes', reportRoutes);
 
-// const userRouter = require("./routes/userRouter");
-// app.use("./routes/userRoutes", userRouter);
+<<<<<<< HEAD
+
+=======
+>>>>>>> 007d88f12ad120f0b8577ea6dff936e731cdef3b
+const userProfileRoutes = require('./routes/userProfileRoutes');
+app.use('/api/login', userProfileRoutes);
+
+// Use the authentication routes
+const authRoutes = require('./routes/authRoutes');
+app.use('/auth', authRoutes);
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 007d88f12ad120f0b8577ea6dff936e731cdef3b
 
 // Error handling middleware
 app.use(handleErrors);
@@ -51,5 +65,8 @@ app.use(handleErrors);
 // Listen on the specified port
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+<<<<<<< HEAD
 });
-
+=======
+});
+>>>>>>> 007d88f12ad120f0b8577ea6dff936e731cdef3b
