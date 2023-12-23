@@ -1,5 +1,5 @@
 {
-  "name": "AdvancedSoftware",
+  "name": "advancedsoftware",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -14,5 +14,8 @@
     "knex": "^3.1.0",
     "mysql": "^2.18.1",
     "uuid": "^9.0.1"
-  }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

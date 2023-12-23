@@ -6,3 +6,5 @@ module.exports = {
   getUserByEmail: (email) => knex('users').where('email', email).first(),
   getUserByUsername: (username) => knex('users').where('username', username).first(),
 };
+
+

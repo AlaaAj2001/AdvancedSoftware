@@ -1,50 +1,31 @@
-const sustainabilityScoreModel = require("../models/sustainabilityScoreModel");
+const knex = require('../knexfile');
+const environmentalDataModel = require('../models/environmentalDataModel');
 
-// Calculate sustainability score based on environmental data and actions
+// Calculate sustainability score based on environmental data
 const calculateSustainabilityScore = async (userId) => {
-  // Placeholder logic - replace this with your actual calculation
-  const environmentalData = await knex('environmental_data').where({ user_id: userId }).select('*');
-  const actionsTaken = await knex('user_actions').where({ user_id: userId }).select('*');
-
-  // Calculate score based on environmental data and actions
-  let score = 0;
-
-  // Example: Consider air quality, temperature, and actions taken as factors
-  if (environmentalData.length > 0) {
-    const averageAirQuality = environmentalData.reduce((sum, data) => sum + data.air_quality, 0) / environmentalData.length;
-    const averageTemperature = environmentalData.reduce((sum, data) => sum + data.temperature, 0) / environmentalData.length;
-
-    // Adjust score based on average air quality and temperature
-    score += (averageAirQuality * 0.5 + averageTemperature * 0.5) / 2;
-  }
-
-  // Adjust score based on actions taken
-  if (actionsTaken.length > 0) {
-    const actionScore = actionsTaken.length * 10; // Placeholder value, adjust as needed
-    score += actionScore;
-  }
-
-  // Update or insert the score into the sustainability_scores table
-  await knex('sustainability_scores').update({ score }).where({ user_id: userId }).returning('*');
-
-  return score;
-};
-
-// Controller function to get the sustainability score for a user
-const getSustainabilityScore = async (req, res) => {
-  const userId = req.params.userId; // Assuming the user ID is part of the request params
-
   try {
-    // Call the function to calculate the sustainability score
-    const score = await calculateSustainabilityScore(userId);
+    // Count total entries
+    const totalEntries = await environmentalDataModel.countUserEntries(userId);
 
-    res.status(200).json({ score });
+    // Count most entered data type
+    const mostEnteredDataType = await environmentalDataModel.getMostEnteredDataType(userId);
+
+    // Calculate score (you can adjust this formula)
+    const score = totalEntries * 5 + (mostEnteredDataType.counter || 0) * 10;
+
+    // Update or insert the score into the sustainability_scores table
+    await knex('sustainability_scores').update({
+      user_id: userId,
+      score,
+      interest_about: mostEnteredDataType.data_type,
+    }).where({ user_id: userId }).returning('*');
+
+    return score;
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    throw new Error('Failed to calculate sustainability score');
   }
 };
 
 module.exports = {
-  getSustainabilityScore,
+  calculateSustainabilityScore,
 };
