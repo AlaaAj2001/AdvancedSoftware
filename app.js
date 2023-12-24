@@ -11,14 +11,14 @@ const bodyParser = require('body-parser'); // Add this line
 app.use(bodyParser.json()); // Add this line to parse JSON bodies
 app.use(bodyParser.urlencoded({ extended: true })); // Add this line to parse URL-encoded bodies
 app.use((req, res, next) => {
-  console.log(`Received ${req.method} request at ${req.url}`);
+  console.log('Received request with body:', req.body);
   next();
 });
 
 // Define error handling middleware
 const handleErrors = (err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
+  res.status(500).json({ error: err.message }); // Send the actual error message
 };
 
 const environmentalDataRoutes = require('./routes/environmentalDataRoutes');
@@ -30,8 +30,8 @@ const userRoutes = require("./routes/userRoutes");
 app.use('/api/users', userRoutes);
 
 // Mount sustainability score routes
-const sustainabilityScoreRoutes = require("./routes/sustainabilityScoreRoutes");
-app.use('/api/sustainability-score', sustainabilityScoreRoutes);
+const sustainabilityScoreRoutes = require('./routes/sustainabilityScoreRoutes');
+app.use('/api', sustainabilityScoreRoutes);
 
 // Mount educational resources routes
 const educationalResourcesRoutes = require("./routes/educationalResourcesRoutes");
@@ -44,13 +44,16 @@ app.use('/api/open-data-access', openDataAccessRoutes);
 const alertRoutes = require("./routes/alertRoutes");
 app.use('/api/alert-Routes', alertRoutes);
 
-
 const reportRoutes = require("./routes/reportRoutes");
-app.use('/api/report-Routes', reportRoutes);const userProfileRoutes = require('./routes/userProfileRoutes');
+app.use('/api/report-Routes', reportRoutes);
+
+const userProfileRoutes = require('./routes/userProfileRoutes');
 app.use('/api/login', userProfileRoutes);
 
 // Use the authentication routes
-const authRoutes = require('./routes/authRoutes');app.use('/auth', authRoutes);
+const authRoutes = require('./routes/authRoutes');
+app.use('/auth', authRoutes);
+
 // Error handling middleware
 app.use(handleErrors);
 

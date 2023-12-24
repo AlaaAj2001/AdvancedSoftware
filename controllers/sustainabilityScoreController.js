@@ -1,31 +1,16 @@
-const knex = require('../knexfile');
-const environmentalDataModel = require('../models/environmentalDataModel');
+const sustainabilityScoreModel = require('../models/sustainabilityScoreModel');
 
-// Calculate sustainability score based on environmental data
-const calculateSustainabilityScore = async (userId) => {
-  try {
-    // Count total entries
-    const totalEntries = await environmentalDataModel.countUserEntries(userId);
-
-    // Count most entered data type
-    const mostEnteredDataType = await environmentalDataModel.getMostEnteredDataType(userId);
-
-    // Calculate score (you can adjust this formula)
-    const score = totalEntries * 5 + (mostEnteredDataType.counter || 0) * 10;
-
-    // Update or insert the score into the sustainability_scores table
-    await knex('sustainability_scores').update({
-      user_id: userId,
-      score,
-      interest_about: mostEnteredDataType.data_type,
-    }).where({ user_id: userId }).returning('*');
-
-    return score;
-  } catch (error) {
-    throw new Error('Failed to calculate sustainability score');
-  }
+const calculateFinalScoreForAllUsersAndRetrieve = async (req, res) => {
+    try {
+        await sustainabilityScoreModel.calculateFinalScoreForAllUsers();
+        const scores = await sustainabilityScoreModel.getAllSustainabilityScores();
+        res.status(200).json({ message: 'Sustainability scores calculated for all users.', scores });
+    } catch (error) {
+        console.error('Error in calculateFinalScoreForAllUsersAndRetrieve:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 };
 
 module.exports = {
-  calculateSustainabilityScore,
+    calculateFinalScoreForAllUsersAndRetrieve,
 };

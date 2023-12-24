@@ -1,6 +1,6 @@
 exports.up = function(knex) {
     return knex.schema.createTable('users', function(table) {
-      table.uuid('id').primary();
+      table.increments('id').primary();
       table.string('username').unique().notNullable();
       table.string('email').unique().notNullable();
       table.string('password').notNullable();
@@ -14,4 +14,3 @@ exports.up = function(knex) {
   exports.down = function(knex) {
     return knex.schema.dropTableIfExists('users');
   };
-  
