@@ -52,7 +52,14 @@ app.use('/api/report-Routes', reportRoutes);const userProfileRoutes = require('.
 app.use('/api/login', userProfileRoutes);
 
 // Use the authentication routes
-const authRoutes = require('./routes/authRoutes');app.use('/auth', authRoutes);
+
+const authRoutes = require('./routes/authRoutes');
+app.use('/auth', authRoutes);
+
+const messageRoutes = require('./routes/messageRoutes');
+app.use('/api/messages', messageRoutes); 
+
+
 // Error handling middleware
 app.use(handleErrors);
 
