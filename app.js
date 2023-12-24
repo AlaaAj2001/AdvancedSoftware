@@ -2,14 +2,14 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const knex = require("./knexfile"); // Assuming database.js is in the same directory
-const bodyParser = require('body-parser'); // Add this line
+const knex = require("./knexfile"); 
+const bodyParser = require('body-parser'); 
 
 
 
 // Middleware
-app.use(bodyParser.json()); // Add this line to parse JSON bodies
-app.use(bodyParser.urlencoded({ extended: true })); // Add this line to parse URL-encoded bodies
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
 app.use((req, res, next) => {
   console.log('Received request with body:', req.body);
   next();
@@ -44,16 +44,13 @@ app.use('/api/open-data-access', openDataAccessRoutes);
 const alertRoutes = require("./routes/alertRoutes");
 app.use('/api/alert-Routes', alertRoutes);
 
-const reportRoutes = require("./routes/reportRoutes");
-app.use('/api/report-Routes', reportRoutes);
 
-const userProfileRoutes = require('./routes/userProfileRoutes');
+const reportRoutes = require("./routes/reportRoutes");
+app.use('/api/report-Routes', reportRoutes);const userProfileRoutes = require('./routes/userProfileRoutes');
 app.use('/api/login', userProfileRoutes);
 
 // Use the authentication routes
-const authRoutes = require('./routes/authRoutes');
-app.use('/auth', authRoutes);
-
+const authRoutes = require('./routes/authRoutes');app.use('/auth', authRoutes);
 // Error handling middleware
 app.use(handleErrors);
 
