@@ -1,10 +1,15 @@
-const knexConfig = require('../knexfile.js');
-const knex = require('knex')(knexConfig);
+const knex = require('../knexfile');
 
 module.exports = {
-  getSustainabilityScoreByUserId: (userId) =>
-    knex('users').select('sustainabilityScore').where({ id: userId }).first(),
+  countUserEntries: (userId) =>
+    knex('environmental_data').where({ user_id: userId }).count(),
 
-  updateSustainabilityScore: (userId, score) =>
-    knex('users').where({ id: userId }).update({ sustainabilityScore: score }),
+  getMostEnteredDataType: (userId) =>
+    knex('environmental_data')
+      .select('data_type')
+      .count('data_type as counter')
+      .where({ user_id: userId })
+      .groupBy('data_type')
+      .orderBy('counter', 'desc')
+      .first(),
 };
