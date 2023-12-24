@@ -55,6 +55,9 @@ app.use('/api/users', userProfileRoutes);
 const authRoutes = require('./routes/authRoutes');
 app.use('/auth', authRoutes);
 
+const messageRoutes = require('./routes/messageRoutes');
+app.use('/api/messages', messageRoutes); 
+
 // Error handling middleware
 app.use(handleErrors);
 
