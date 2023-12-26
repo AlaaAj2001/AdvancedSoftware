@@ -24,6 +24,9 @@ const User = {
 
   deleteUser: async (username) => {
     return await knex('users').where('username', username).del();
+  },
+  getUserByLocation: async (location) => {
+    return knex('users').where('locaton', location).first(); 
   }
 };
 

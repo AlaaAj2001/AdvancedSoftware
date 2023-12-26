@@ -86,6 +86,16 @@ const deleteUser = async (username, password) => {
   }
 };
 
+const getUserByLocation = async (location) => {
+  try {
+    const user = await userModel.getUserByLocation(location);
+    return user;
+  } catch (error) {
+    console.error('Error in getUserByLocation:', error.message);
+    throw error;
+  }
+};
+
 module.exports = {
   loginUser,
   updateUser,
