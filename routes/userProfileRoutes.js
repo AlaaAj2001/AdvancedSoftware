@@ -143,4 +143,38 @@ router.delete('/delete/:username', async (req, res) => {
   }
 });
 
+// Route for searching users by mostEnteredDataType
+router.get('/search/:mostEnteredDataType', async (req, res) => {
+  try {
+    const mostEnteredDataType = req.params.mostEnteredDataType;
+
+    console.log('Most Entered Data Type:', mostEnteredDataType);
+
+    // Get users who have the specified mostEnteredDataType
+    const usersWithMostEnteredDataType = await sustainabilityScoreModel.getUserInfoByMostEnteredDataType(mostEnteredDataType);
+
+    console.log('Users with Most Entered Data Type:', usersWithMostEnteredDataType);
+
+    // Extract relevant information and filter out sensitive information
+    const userProfiles = usersWithMostEnteredDataType.map(user => ({
+      username: user.username,
+      email: user.email,
+      gender: user.gender,
+      dob: user.dob,
+      location: user.location,
+      user_type: user.user_type,
+      created_at: user.created_at,
+      sustainabilityScore: {
+        finalScore: user.finalScore,
+        mostEnteredDataType: user.mostEnteredDataType,
+      },
+    }));
+
+    res.status(200).json({ message: 'Users retrieved successfully', users: userProfiles });
+  } catch (error) {
+    console.error('Error in /search/:mostEnteredDataType:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;

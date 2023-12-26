@@ -139,6 +139,31 @@ const calculateFinalScore = async (username) => {
     }
 };
 
+const getUserInfoByMostEnteredDataType = async (mostEnteredDataType) => {
+    try {
+        const users = await knex('sustainability_scores')
+            .where('mostEnteredDataType', mostEnteredDataType)
+            .join('users', 'sustainability_scores.username', 'users.username')
+            .select(
+                'users.username',
+                'users.email',
+                'users.gender',
+                'users.dob',
+                'users.location',
+                'sustainability_scores.finalScore',
+                'sustainability_scores.mostEnteredDataType'
+            );
+
+        console.log('Users obtained from database:', users);
+
+        return users;
+    } catch (error) {
+        console.error('Error in getUserInfoByMostEnteredDataType:', error.message);
+        throw error;
+    }
+};
+
+
 module.exports = {
     getAllUsers,
     getEntryCountByUserId,
@@ -147,5 +172,5 @@ module.exports = {
     getMostEnteredDataTypeByUserId,
     calculateFinalScoreForAllUsers,
     getSustainabilityScoreByUsername,
-
+    getUserInfoByMostEnteredDataType,
 };
