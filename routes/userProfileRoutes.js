@@ -16,23 +16,12 @@ router.get('/:username', async (req, res) => {
       return;
     }
     
-    //get user by location
-    const location = req.params.username;
-
-    // Get user information
-    const loca = await userController.getUserBylocation(username);
-
-    if (!user) {
-      res.status(404).json({ error: 'User not found' });
-      return;
-
-    }
+    
     // Get sustainability score information
     const sustainabilityScore = await sustainabilityScoreModel.getSustainabilityScoreByUsername(username);
 
     // Combine user and sustainability score information
-    const userProfile = {
-      username: user.username,
+    const userProfile = {     username: user.username,
       email: user.email,
       gender: user.gender,
       dob: user.dob,
@@ -51,7 +40,41 @@ router.get('/:username', async (req, res) => {
   }
 });
 
+router.get('/:location', async (req, res) => {
+  try {
+    const username = req.params.username;
+    //get user by location
+    const location = req.params.username;
 
+   // Get user information
+   const loca = await userController.getUserByLocation(username);
+
+   if (!user) {
+   res.status(404).json({ error: 'User not found' });
+   return;
+
+   }
+  
+   const userProfile = {     username: user.username,
+    email: user.email,
+    gender: user.gender,
+    dob: user.dob,
+    location: user.location,
+    user_type: user.user_type,
+    created_at: user.created_at,
+    sustainabilityScore: {
+      finalScore: sustainabilityScore ? sustainabilityScore.finalScore : null,
+      mostEnteredDataType: sustainabilityScore ? sustainabilityScore.mostEnteredDataType : null,
+    },
+   };
+
+   res.status(200).json({ message: 'User profile retrieved successfully', user: userProfile });
+  } catch (error) {
+  res.status(500).json({ error: error.message });
+}
+});
+
+  
 // Route for user login
 router.post('/login', async (req, res) => {
   try {

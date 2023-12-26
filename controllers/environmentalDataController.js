@@ -1,18 +1,35 @@
 const environmentalDataModel = require('../models/environmentalDataModel');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const addEnvironmentalData = async (req, res) => {
     try {
-        const { username, source, data_type, value, location } = req.body;
-        const data = {
-            username,
-            source,
-            data_type,
-            value,
-            location,
-            created_at: new Date().toISOString(),
-        };
-        const insertedData = await environmentalDataModel.addEnvironmentalData(data);
-        res.status(201).json({ message: 'Environmental data added successfully', data: insertedData });
+        // Get the token from the request headers
+        const token = req.headers.authorization;
+
+        if (!token) {
+            return res.status(401).json({ message: 'Unauthorized: No token provided' });
+        }
+
+        // Verify the token
+        jwt.verify(token, 'yourSecretKey', async (err, decoded) => {
+            if (err) {
+                return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+            }
+            // If token is valid, proceed to add environmental data
+            const { username, source, data_type, value, location } = req.body;
+            const data = {
+                username,
+                source,
+                data_type,
+                value,
+                location,
+                created_at: new Date().toISOString(),
+            };
+
+            const insertedData = await environmentalDataModel.addEnvironmentalData(data);
+            res.status(201).json({ message: 'Environmental data added successfully', data: insertedData });
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
