@@ -15,7 +15,18 @@ router.get('/:username', async (req, res) => {
       res.status(404).json({ error: 'User not found' });
       return;
     }
+    
+    //get user by location
+    const location = req.params.username;
 
+    // Get user information
+    const loca = await userController.getUserBylocation(username);
+
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+
+    }
     // Get sustainability score information
     const sustainabilityScore = await sustainabilityScoreModel.getSustainabilityScoreByUsername(username);
 
