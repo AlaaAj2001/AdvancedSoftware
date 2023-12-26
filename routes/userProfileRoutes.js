@@ -42,15 +42,14 @@ router.get('/:username', async (req, res) => {
 
 router.get('/:location', async (req, res) => {
   try {
-    const username = req.params.username;
-    //get user by location
+  
     const location = req.params.username;
 
    // Get user information
-   const loca = await userController.getUserByLocation(username);
+   const loca = await userController.getUserByLocation(location);
 
-   if (!user) {
-   res.status(404).json({ error: 'User not found' });
+   if (!loca) {
+   res.status(404).json({ error: 'Location not found' });
    return;
 
    }
