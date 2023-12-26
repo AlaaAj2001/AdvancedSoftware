@@ -66,7 +66,7 @@ router.post('/login', async (req, res) => {
         ]
       });
     } 
-    else {
+    else if(user.user_type === 'NormalUser' || user.user_type === '') {
       // Welcome message for NormalUser
       welcomeMessages.push('Welcome to the system for Normal Users!');
      }
