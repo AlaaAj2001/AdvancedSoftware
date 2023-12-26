@@ -18,6 +18,28 @@ const addEnvironmentalData = async (req, res) => {
     }
 };
 
+const getDataByDataType = async (req, res) => {
+    try {
+        const { data_type } = req.params;
+        const data = await environmentalDataModel.getDataByDataType(data_type);
+        res.status(200).json({ data });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const getDataByLocation = async (req, res) => {
+    try {
+        const { location } = req.params;
+        const data = await environmentalDataModel.getDataByLocation(location);
+        res.status(200).json({ data });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     addEnvironmentalData,
+    getDataByDataType,
+    getDataByLocation,
 };

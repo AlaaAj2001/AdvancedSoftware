@@ -1,36 +1,56 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
 const userController = require('../controllers/userProfileController');
-
-// Route for user registration
-router.post('/register', async (req, res) => {
-  try {
-    const userData = req.body;
-    const newUser = await userController.createUser(userData);
-    res.status(201).json({ message: 'User created successfully', user: newUser });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 // Route for user login
 router.post('/login', async (req, res) => {
   try {
-    const credentials = req.body;
-    const { user, token } = await userController.loginUser(credentials);
-    res.status(200).json({ message: 'Login successful', user, token });
+    const { username, password } = req.body;
+
+    const { user, token } = await userController.loginUser({ username, password });
+
+    let message = `Login successful as a ${user.user_type}`;
+    let welcomeMessages = []; 
+
+    if (user.user_type !== 'NormalUser') {
+      // Welcome messages for non-NormalUser types
+      welcomeMessages.push('To access the aggregated environmental data:');
+      welcomeMessages.push('According to:');
+      welcomeMessages.push({
+        "data type": [
+          "Please try this API: http://localhost:3000/api/environmentaldata/byDataType/:data_type",
+          "By putting instead of :data_type {humidity, temperature, air quality, water quality, biodiversity metrics}"
+        ],
+        "location": [
+          "Please try this API: http://localhost:3000/api/environmentaldata/byLocation/:location",
+          "By putting instead of :location {Nablus, Tulkarm, Ramallah, Jerusalem, Jericho}"
+        ]
+      });
+    } else {
+      // Welcome message for NormalUser
+      welcomeMessages.push('Welcome to the system for Normal Users!');
+     }
+
+    // Your response object
+    const responseObject = {
+      message: message,
+      welcome: welcomeMessages,
+      // other properties in your response
+    };
+
+    // Send the response
+    res.status(200).json(responseObject);
   } catch (error) {
     res.status(401).json({ error: error.message });
   }
 });
 
 // Route for updating user profile
-router.put('/update/:userId', async (req, res) => {
+router.put('/update/:username', async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const username = req.params.username;
     const updatedData = req.body;
-    const updatedUser = await userController.updateUser(userId, updatedData);
+    const updatedUser = await userController.updateUser(username, updatedData);
     res.status(200).json({ message: 'User updated successfully', user: updatedUser });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -38,10 +58,11 @@ router.put('/update/:userId', async (req, res) => {
 });
 
 // Route for deleting user profile
-router.delete('/delete/:userId', async (req, res) => {
+router.delete('/delete/:username', async (req, res) => {
   try {
-    const userId = req.params.userId;
-    await userController.deleteUser(userId);
+    const username = req.params.username;
+    const { password } = req.body;
+    await userController.deleteUser(username, password);
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });

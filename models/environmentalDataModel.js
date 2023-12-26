@@ -12,7 +12,26 @@ const addEnvironmentalData = async (data) => {
     }
 };
 
-module.exports = {
-    addEnvironmentalData,
+const getDataByDataType = async (data_type) => {
+    try {
+        const data = await knex('environmentaldata').where('data_type', data_type);
+        return data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
 };
 
+const getDataByLocation = async (location) => {
+    try {
+        const data = await knex('environmentaldata').where('location', location);
+        return data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+module.exports = {
+    addEnvironmentalData,
+    getDataByDataType,
+    getDataByLocation,
+};

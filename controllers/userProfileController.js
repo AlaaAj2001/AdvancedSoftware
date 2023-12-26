@@ -3,60 +3,78 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const loginUser = async (credentials) => {
-  const { username, email, password } = credentials;
+  try {
+    const { username, password } = credentials;
 
-  // Check if the user exists by username or email
-  const user = username
-    ? await userModel.getUserByUsername(username)
-    : await userModel.getUserByEmail(email);
+    const user = await userModel.getUserByUsername(username);
 
-  if (!user) {
-    throw new Error('Invalid username/email or password');
+    if (!user) {
+      throw new Error('Invalid username or password');
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      throw new Error('Invalid username or password');
+    }
+
+    const token = generateToken(user);
+    const userType = await userModel.getUserType(username);
+
+    return { user: { username, user_type: userType.user_type }, token };
+  } catch (error) {
+    throw new Error(error.message);
   }
-
-  // Check if the password matches
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (!passwordMatch) {
-    throw new Error('Invalid username/email or password');
-  }
-
-  // Generate JWT token
-  const token = generateToken(user);
-
-  return { user, token };
 };
 
 const generateToken = (user) => {
   const payload = {
-    id: user.id,
     username: user.username,
-    email: user.email,
-    // Add more user data to the payload if needed
+    // Add more user data to payload if needed
   };
 
-  const token = jwt.sign(payload, 'yourSecretKey', { expiresIn: '1h' }); // Change 'yourSecretKey' to a secure secret key
+  const secretKey = 'yourSecretKey'; // Replace with a secure secret key
+  const options = { expiresIn: '1h' }; // Token expiration time
+
+  const token = jwt.sign(payload, secretKey, options);
 
   return token;
 };
-const updateUser = async (userId, updatedUserData) => {
+
+const updateUser = async (username, updatedUserData) => {
   try {
-    
-    const updatedUser = await userModel.updateUser(userId, updatedUserData);
+    const updatedUser = await userModel.updateUser(username, updatedUserData);
     return updatedUser;
   } catch (error) {
     throw new Error('Error updating user');
   }
 };
 
-const deleteUser = async (userId) => {
+const deleteUser = async (username, password) => {
   try {
+    // Fetch user from the database based on username
+    const user = await userModel.getUserByUsername(username);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Compare password hash
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      throw new Error('Incorrect password');
+    }
+
     // Implement user deletion logic using the userModel
-    await userModel.deleteUser(userId);
+    await userModel.deleteUser(username);
+
     return { message: 'User deleted successfully' };
   } catch (error) {
     throw new Error('Error deleting user');
   }
 };
+
 module.exports = {
   loginUser,
   updateUser,

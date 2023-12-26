@@ -6,24 +6,24 @@ const User = {
     return await knex('users').select('*');
   },
 
-  getUserById: async (id) => {
-    return await knex('users').where({ id }).first();
-  },
-
   getUserByEmail: async (email) => {
-    return await knex('users').where({ email }).first();
+    return knex('users').where('email', email).first(); 
+  },
+  
+  getUserType: async (username) => {
+    return knex('users').where('username', username).select('user_type').first();
   },
 
-  createUser: async (user) => {
-    return await knex('users').insert(user);
+  getUserByUsername: async (username) => {
+    return knex('users').where('username', username).first(); 
   },
 
-  updateUser: async (id, userData) => {
-    return await knex('users').where({ id }).update(userData);
+  updateUser: async (username, userData) => {
+    return await knex('users').where('username', username).update(userData);
   },
 
-  deleteUser: async (id) => {
-    return await knex('users').where({ id }).del();
+  deleteUser: async (username) => {
+    return await knex('users').where('username', username).del();
   }
 };
 
