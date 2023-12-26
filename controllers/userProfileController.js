@@ -2,6 +2,17 @@ const userModel = require('../models/userProfileModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
+const getUserByUsername = async (username) => {
+  try {
+    const user = await userModel.getUserByUsername(username);
+    return user;
+  } catch (error) {
+    console.error('Error in getUserByUsername:', error.message);
+    throw error;
+  }
+};
+
 const loginUser = async (credentials) => {
   try {
     const { username, password } = credentials;
@@ -78,5 +89,6 @@ const deleteUser = async (username, password) => {
 module.exports = {
   loginUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserByUsername
 };

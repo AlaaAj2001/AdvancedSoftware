@@ -1,6 +1,18 @@
 const knexConfig = require('../knexfile.js');
 const knex = require('knex')(knexConfig);
 
+
+
+const getSustainabilityScoreByUsername = async (username) => {
+    try {
+      const score = await knex('sustainability_scores').where('username', username).first();
+      return score;
+    } catch (error) {
+      console.error('Error in getSustainabilityScoreByUsername:', error.message);
+      throw error;
+    }
+  };
+
 const getEntryCountByUserId = async (username) => {
     try {
         // Directly query the environmentaldata table to count occurrences of the username
@@ -134,4 +146,6 @@ module.exports = {
     getAllSustainabilityScores,
     getMostEnteredDataTypeByUserId,
     calculateFinalScoreForAllUsers,
+    getSustainabilityScoreByUsername,
+
 };
