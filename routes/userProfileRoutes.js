@@ -40,40 +40,17 @@ router.get('/:username', async (req, res) => {
   }
 });
 
-router.get('/:location', async (req, res) => {
+// Route for getting users by location
+router.get('/byLocation/:location', async (req, res) => {
   try {
-  
-    const location = req.params.username;
-
-   // Get user information
-   const loca = await userController.getUserByLocation(location);
-
-   if (!loca) {
-   res.status(404).json({ error: 'Location not found' });
-   return;
-
-   }
-  
-   const userProfile = {     username: user.username,
-    email: user.email,
-    gender: user.gender,
-    dob: user.dob,
-    location: user.location,
-    user_type: user.user_type,
-    created_at: user.created_at,
-    sustainabilityScore: {
-      finalScore: sustainabilityScore ? sustainabilityScore.finalScore : null,
-      mostEnteredDataType: sustainabilityScore ? sustainabilityScore.mostEnteredDataType : null,
-    },
-   };
-
-   res.status(200).json({ message: 'User profile retrieved successfully', user: userProfile });
+    const location = req.params.location;
+    const users = await userController.getUsersByLocation(location);
+    res.status(200).json({ message: 'Users retrieved successfully', users });
   } catch (error) {
-  res.status(500).json({ error: error.message });
-}
+    res.status(500).json({ error: error.message });
+  }
 });
 
-  
 // Route for user login
 router.post('/login', async (req, res) => {
   try {

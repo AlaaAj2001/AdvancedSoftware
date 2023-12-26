@@ -86,13 +86,11 @@ const deleteUser = async (username, password) => {
   }
 };
 
-const getUserByLocation = async (location) => {
+const getUsersByLocation = async (location) => {
   try {
-    const user = await userModel.getUserByLocation(location);
-    return user;
+    return await userModel.getUsersByLocation(location);
   } catch (error) {
-    console.error('Error in getUserByLocation:', error.message);
-    throw error;
+    throw new Error(error.message);
   }
 };
 
@@ -100,5 +98,6 @@ module.exports = {
   loginUser,
   updateUser,
   deleteUser,
-  getUserByUsername
+  getUserByUsername,
+  getUsersByLocation,
 };
