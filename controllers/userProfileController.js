@@ -44,8 +44,8 @@ const generateToken = (user) => {
     // Add more user data to payload if needed
   };
 
-  const secretKey = 'yourSecretKey'; // Replace with a secure secret key
-  const options = { expiresIn: '1h' }; // Token expiration time
+  const secretKey = 'yourSecretKey'; 
+  const options = { expiresIn: '1h' }; 
 
   const token = jwt.sign(payload, secretKey, options);
 
