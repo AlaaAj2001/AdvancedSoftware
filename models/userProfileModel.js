@@ -35,6 +35,11 @@ const User = {
       throw new Error(error.message);
     }
   },
+
+  checkUserExists: async (username) => {
+    const user = await knex('users').where('username', username).first();
+    return !!user; // Returns true if the user exists, false otherwise
+  },
 };
 
 

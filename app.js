@@ -56,11 +56,6 @@ app.get('/api/weather', async (req, res) => {
         units: 'metric',
       },
     });
-    
-
-
-
-
     const weatherData = response.data;
     // Process the weather data and integrate it into your EcoTrack project
 

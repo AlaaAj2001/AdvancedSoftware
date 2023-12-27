@@ -40,12 +40,12 @@ const loginUser = async (credentials) => {
 
 const generateToken = (user) => {
   const payload = {
-    username: user.username,
-    // Add more user data to payload if needed
+      password: user.password, 
+      username: user.username,
   };
 
-  const secretKey = 'yourSecretKey'; 
-  const options = { expiresIn: '1h' }; 
+  const secretKey = 'yourSecretKey';
+  const options = { expiresIn: '1h' };
 
   const token = jwt.sign(payload, secretKey, options);
 

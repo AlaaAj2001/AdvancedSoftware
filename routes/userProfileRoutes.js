@@ -85,6 +85,7 @@ router.post('/login', async (req, res) => {
     const responseObject = {
       message: message,
       welcome: welcomeMessages,
+      token: token,
       // other properties in your response
     };
 
