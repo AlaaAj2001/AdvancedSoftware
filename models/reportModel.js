@@ -6,7 +6,11 @@ const knex = require('knex')(knexConfig);
 
 module.exports = {
 
-  createReport: (report) => knex('reports').insert(report),
+  createReport: (report) => knex('reports').insert(report)
+   .catch(error => {
+     console.error('Error in createReport model:', error);
+     throw error;
+   }),
 
   
 };
