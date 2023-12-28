@@ -81,12 +81,12 @@ router.post('/login', async (req, res) => {
       welcomeMessages.push('Welcome to the system for Normal Users!');
      }
 
-    // Your response object
+    
     const responseObject = {
       message: message,
       welcome: welcomeMessages,
       token: token,
-      // other properties in your response
+      
     };
 
     // Send the response

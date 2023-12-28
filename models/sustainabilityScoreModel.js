@@ -1,19 +1,7 @@
 const knexConfig = require('../knexfile.js');
 const knex = require('knex')(knexConfig);
 
-
-
 const getSustainabilityScoreByUsername = async (username) => {
-    try {
-      const score = await knex('sustainability_scores').where('username', username).first();
-      return score;
-    } catch (error) {
-      console.error('Error in getSustainabilityScoreByUsername:', error.message);
-      throw error;
-    }
-  };
-
-const getEntryCountByUserId = async (username) => {
     try {
         // Directly query the environmentaldata table to count occurrences of the username
         const entryCount = await knex('environmentaldata').where('username', username).count('* as count').first();
@@ -27,7 +15,7 @@ const getEntryCountByUserId = async (username) => {
     }
 };
 
-const getMostEnteredDataTypeByUserId = async (username) => {
+const getMostEnteredDataTypeByUsername = async (username) => {
     try {
         // Query the environmentaldata table to get the most entered data type for the user
         const result = await knex('environmentaldata')
@@ -118,7 +106,7 @@ const calculateFinalScoreForAllUsers = async () => {
 const calculateFinalScore = async (username) => {
     try {
         // Calculate the final score for the user
-        const entryCount = await getEntryCountByUserId(username);
+        const entryCount = await getSustainabilityScoreByUsername(username);
         console.log('Username:', username);
         console.log('Entry Count:', entryCount);
 
@@ -126,7 +114,7 @@ const calculateFinalScore = async (username) => {
         console.log('Total Score:', totalScore);
 
         // Get the most entered data type for the user
-        const mostEnteredDataType = await getMostEnteredDataTypeByUserId(username);
+        const mostEnteredDataType = await getMostEnteredDataTypeByUsername(username);
         console.log('Most Entered Data Type:', mostEnteredDataType);
 
         // Update or insert the sustainability score for the user
@@ -166,10 +154,9 @@ const getUserInfoByMostEnteredDataType = async (mostEnteredDataType) => {
 
 module.exports = {
     getAllUsers,
-    getEntryCountByUserId,
     updateOrCreateSustainabilityScore,
     getAllSustainabilityScores,
-    getMostEnteredDataTypeByUserId,
+    getMostEnteredDataTypeByUsername,
     calculateFinalScoreForAllUsers,
     getSustainabilityScoreByUsername,
     getUserInfoByMostEnteredDataType,

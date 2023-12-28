@@ -1,7 +1,7 @@
 // controllers/reportController.js
 
 const reportModel = require('../models/reportModel');
-const userModel = require('../models/userModel'); // Import the userModel
+const userModel = require('../models/userModel');
 const createReport = async (req, res) => {
   const { username, description } = req.body;
 

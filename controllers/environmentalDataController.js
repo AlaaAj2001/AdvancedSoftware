@@ -1,7 +1,7 @@
 const environmentalDataModel = require('../models/environmentalDataModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userModel = require('../models/userProfileModel'); // Import your user model
+const userModel = require('../models/userProfileModel');
 
 const addEnvironmentalData = async (req, res) => {
     try {

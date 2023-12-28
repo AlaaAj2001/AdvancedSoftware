@@ -24,8 +24,8 @@ const Message = {
 
     // Fetch messages for the receiver
     const messages = await knex('messages')
-      .where('receiverUsernameOrEmail', user.username) // Update the column name to match your table
-      .orWhere('receiverUsernameOrEmail', user.email) // Update the column name to match your table
+      .where('receiverUsernameOrEmail', user.username) 
+      .orWhere('receiverUsernameOrEmail', user.email)
       .select('senderUsernameOrEmail as sender', 'message', 'createdAt');
 
     return messages;

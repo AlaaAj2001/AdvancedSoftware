@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
-const axios = require('axios'); // Import Axios for making HTTP requests
+const axios = require('axios'); 
 
 // Middleware
 app.use(bodyParser.json());
@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 // Define error handling middleware
 const handleErrors = (err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: err.message }); // Send the actual error message
+  res.status(500).json({ error: err.message }); 
 };
 
 // Mount environmental data routes
@@ -52,16 +52,16 @@ app.get('/api/weather', async (req, res) => {
     const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
       params: {
         q: 'Palestine, PS',
-        appid: '17466be83e6366675f3ad4fca5f91a01', // Use your actual API key here
+        appid: '17466be83e6366675f3ad4fca5f91a01', 
         units: 'metric',
       },
     });
     const weatherData = response.data;
-    // Process the weather data and integrate it into your EcoTrack project
+    
 
     res.json(weatherData);
   } catch (error) {
-  console.error('Axios Error:', error); // Log Axios error details
+  console.error('Axios Error:', error);
   res.status(500).json({ error: 'Internal Server Error' });
 }
 
